@@ -3,27 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width" />
   <title>ClusterFun!</title>
-  <style>
-    body {
-      font-family: arial;
-    }
-    #matrix {
-     font-family: sans-serif;
-     font-size: 32px;
-    }
-    .color0 {
-     background-color: yellow;
-    }
-    .color1 {
-     background-color: aqua;
-    }
-    .color2 {
-     background-color: pink;
-    }
-    span {
-     padding: 0 0 0 10px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="app.css">
 </head>
 
 <body>
@@ -32,74 +12,5 @@
   <h2 id="results"></h2>
   <button id="next">Refresh</button>
 
-  <script>
-    const SIZE = 6;
-    const squares = [];
-    const matrixDisplay = document.querySelector('#matrix');
-    const resultsDiv = document.querySelector('#results');
-
-    const countClusters = () => {
-      clusters = [];
-      let currentSegment = { };
-      let currentCluserId = 0;
-      for (var i = 0; i < SIZE; i ++) {
-        for (var j = 0; j < SIZE; j ++) {
-          if ((j === 0) || (squares[i][j - 1].value !== squares[i][j].value)) {
-            currentCluserId++;
-            currentSegment = { clusterId: currentCluserId }
-            clusters.push( currentCluserId );
-          }
-          squares[i][j].segment = currentSegment;
-          if (i > 0) {
-            if (squares[i - 1][j].value === squares[i][j].value) {
-              let badClusterId;
-              if ( squares[i][j].segment.clusterId > squares[i - 1][j].segment.clusterId) {
-                badClusterId = squares[i][j].segment.clusterId;
-                squares[i][j].segment.clusterId = squares[i - 1][j].segment.clusterId;                
-              } else if ( squares[i][j].segment.clusterId < squares[i - 1][j].segment.clusterId) {
-                badClusterId = squares[i - 1][j].segment.clusterId;
-                squares[i - 1 ][j].segment.clusterId = squares[i][j].segment.clusterId;                
-              }
-              const removeClusterIdIndex = clusters.indexOf(badClusterId);
-              if (removeClusterIdIndex > -1) {
-                console.log(currentCluserId);
-                clusters.splice(removeClusterIdIndex, 1);
-              }
-            }
-          }
-        }
-      }
-      for (var i = 0; i < SIZE; i ++) {
-        let str = '';
-        for (var j = 0; j < SIZE; j ++) {
-          str = str + ' ' + squares[i][j].segment.clusterId;
-        }
-        console.log(str);
-      }
-      resultsDiv.innerHTML = `count: ${clusters.length}`;
-    };
-
-    const generateMatrix = () => {
-      matrixDisplay.innerHTML = '';
-      for (var i = 0; i < SIZE; i ++) {
-        squares[i] = [];
-        const rowDiv = document.createElement('div');
-        for (var j = 0; j < SIZE; j ++) {
-          squares[i][j] = { value: Math.round(Math.random() * 2) };
-          rowDiv.innerHTML += `<span class="color${squares[i][j].value}">
-            ${squares[i][j].value}
-            <\span>`;
-        }
-        matrixDisplay.appendChild(rowDiv);
-      }
-      countClusters();
-    }
-
-    addEventListener('load', function(e) {
-      generateMatrix();
-    });
-    document.querySelector('#next').addEventListener('click', () => {
-      generateMatrix();
-    });
-  </script>
+  <script src="./app.js"></script>
 </body>
