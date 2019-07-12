@@ -1,0 +1,87 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>Cluster Fun!</title>
+  <style>
+    body {
+      font-family: arial;
+    }
+    #matrix {
+     font-family: sans-serif;
+     font-size: 32px;
+    }
+    .color0 {
+     background-color: yellow;
+    }
+    .color1 {
+     background-color: #00ffff;
+    }
+    .color2 {
+     background-color: pink;
+    }
+    span {
+     padding: 0 2px 0 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>cluster fun!</h1>
+  <div id="matrix"></div>
+  <h2 id="results"></h2>
+  <button id="next">next</button>
+  <script>
+    const SIZE = 6;
+    const squares = [];
+    const matrixDisplay = document.querySelector('#matrix');
+    const resultsDiv = document.querySelector('#results');
+    let segments;
+
+    const countSegments = () => {
+     segments = [];
+     let currentSegmentId = 0;
+    for (var i = 0; i < SIZE; i ++) {
+    for (var j = 0; j < SIZE; j ++) {
+     if ((j === 0) || (squares[i][j - 1].value !== squares[i][j].value)) {
+       currentSegmentId++;
+       segments.push(currentSegmentId);
+     }
+     squares[i][j].segmentId = currentSegmentId;
+     if (i > 0) {
+       if (squares[i - 1][j].value === squares[i][j].value) {
+         const removeSegmentIdIndex = segments.indexOf(squares[i - 1][j].segmentId);
+         if (removeSegmentIdIndex > -1) {
+        segments.splice(removeSegmentIdIndex, 1);
+         }
+       }
+     }
+    }
+    console.log(segments.length);
+    }
+    resultsDiv.innerHTML = `count: ${segments.length}`;
+
+    };
+
+    const generateMatrix = () => {
+       matrixDisplay.innerHTML = '';
+       for (var i = 0; i < SIZE; i ++) {
+         squares[i] = [];
+         const rowDiv = document.createElement('div');
+         for (var j = 0; j < SIZE; j ++) {
+           squares[i][j] = { value: Math.round(Math.random() * 2) };
+           rowDiv.innerHTML += `<span class="color${squares[i][j].value}">${squares[i][j].value}<\span>`;
+         }
+         matrixDisplay.appendChild(rowDiv);
+       }
+       countSegments();
+     }
+
+    addEventListener('load', function(e) {
+
+    generateMatrix();
+    });
+    document.querySelector('#next').addEventListener('click', () => {
+     generateMatrix();
+    });
+  </script>
+</body>

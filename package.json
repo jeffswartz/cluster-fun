@@ -1,0 +1,14 @@
+{
+  "name": "cluster-fun",
+  "version": "0.1.0",
+  "engines": {
+    "node": "8.15.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
