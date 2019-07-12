@@ -37,29 +37,46 @@
     const squares = [];
     const matrixDisplay = document.querySelector('#matrix');
     const resultsDiv = document.querySelector('#results');
-    let segments;
 
-    const countSegments = () => {
-      segments = [];
-      let currentSegmentId = 0;
+    const countClusters = () => {
+      clusters = [];
+      let currentSegment = { };
+      let currentCluserId = 0;
       for (var i = 0; i < SIZE; i ++) {
         for (var j = 0; j < SIZE; j ++) {
           if ((j === 0) || (squares[i][j - 1].value !== squares[i][j].value)) {
-            currentSegmentId++;
-            segments.push(currentSegmentId);
+            currentCluserId++;
+            currentSegment = { clusterId: currentCluserId }
+            clusters.push( currentCluserId );
           }
-          squares[i][j].segmentId = currentSegmentId;
+          squares[i][j].segment = currentSegment;
           if (i > 0) {
             if (squares[i - 1][j].value === squares[i][j].value) {
-              const removeSegmentIdIndex = segments.indexOf(squares[i - 1][j].segmentId);
-              if (removeSegmentIdIndex > -1) {
-                segments.splice(removeSegmentIdIndex, 1);
+              let badClusterId;
+              if ( squares[i][j].segment.clusterId > squares[i - 1][j].segment.clusterId) {
+                badClusterId = squares[i][j].segment.clusterId;
+                squares[i][j].segment.clusterId = squares[i - 1][j].segment.clusterId;                
+              } else if ( squares[i][j].segment.clusterId < squares[i - 1][j].segment.clusterId) {
+                badClusterId = squares[i - 1][j].segment.clusterId;
+                squares[i - 1 ][j].segment.clusterId = squares[i][j].segment.clusterId;                
+              }
+              const removeClusterIdIndex = clusters.indexOf(badClusterId);
+              if (removeClusterIdIndex > -1) {
+                console.log(currentCluserId);
+                clusters.splice(removeClusterIdIndex, 1);
               }
             }
           }
         }
       }
-      resultsDiv.innerHTML = `count: ${segments.length}`;
+      for (var i = 0; i < SIZE; i ++) {
+        let str = '';
+        for (var j = 0; j < SIZE; j ++) {
+          str = str + ' ' + squares[i][j].segment.clusterId;
+        }
+        console.log(str);
+      }
+      resultsDiv.innerHTML = `count: ${clusters.length}`;
     };
 
     const generateMatrix = () => {
@@ -75,7 +92,7 @@
         }
         matrixDisplay.appendChild(rowDiv);
       }
-      countSegments();
+      countClusters();
     }
 
     addEventListener('load', function(e) {
