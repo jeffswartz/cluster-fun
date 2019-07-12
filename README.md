@@ -1,4 +1,4 @@
-# cluster-fun
+# clusterfun
 Find the clusters of similar values in a 2x2 matrix
 
 A simple app for finding pairs of words within words (e.g., "horse radish" in "horse radish").
