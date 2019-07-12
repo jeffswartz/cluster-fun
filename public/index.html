@@ -21,15 +21,17 @@
      background-color: pink;
     }
     span {
-     padding: 0 2px 0 12px;
+     padding: 0 0 0 10px;
     }
   </style>
 </head>
+
 <body>
   <h1>cluster fun!</h1>
   <div id="matrix"></div>
   <h2 id="results"></h2>
-  <button id="next">next</button>
+  <button id="next">Refresh</button>
+
   <script>
     const SIZE = 6;
     const squares = [];
@@ -38,50 +40,49 @@
     let segments;
 
     const countSegments = () => {
-     segments = [];
-     let currentSegmentId = 0;
-    for (var i = 0; i < SIZE; i ++) {
-    for (var j = 0; j < SIZE; j ++) {
-     if ((j === 0) || (squares[i][j - 1].value !== squares[i][j].value)) {
-       currentSegmentId++;
-       segments.push(currentSegmentId);
-     }
-     squares[i][j].segmentId = currentSegmentId;
-     if (i > 0) {
-       if (squares[i - 1][j].value === squares[i][j].value) {
-         const removeSegmentIdIndex = segments.indexOf(squares[i - 1][j].segmentId);
-         if (removeSegmentIdIndex > -1) {
-        segments.splice(removeSegmentIdIndex, 1);
-         }
-       }
-     }
-    }
-    console.log(segments.length);
-    }
-    resultsDiv.innerHTML = `count: ${segments.length}`;
-
+      segments = [];
+      let currentSegmentId = 0;
+      for (var i = 0; i < SIZE; i ++) {
+        for (var j = 0; j < SIZE; j ++) {
+          if ((j === 0) || (squares[i][j - 1].value !== squares[i][j].value)) {
+            currentSegmentId++;
+            segments.push(currentSegmentId);
+          }
+          squares[i][j].segmentId = currentSegmentId;
+          if (i > 0) {
+            if (squares[i - 1][j].value === squares[i][j].value) {
+              const removeSegmentIdIndex = segments.indexOf(squares[i - 1][j].segmentId);
+              if (removeSegmentIdIndex > -1) {
+                segments.splice(removeSegmentIdIndex, 1);
+              }
+            }
+          }
+        }
+      }
+      resultsDiv.innerHTML = `count: ${segments.length}`;
     };
 
     const generateMatrix = () => {
-       matrixDisplay.innerHTML = '';
-       for (var i = 0; i < SIZE; i ++) {
-         squares[i] = [];
-         const rowDiv = document.createElement('div');
-         for (var j = 0; j < SIZE; j ++) {
-           squares[i][j] = { value: Math.round(Math.random() * 2) };
-           rowDiv.innerHTML += `<span class="color${squares[i][j].value}">${squares[i][j].value}<\span>`;
-         }
-         matrixDisplay.appendChild(rowDiv);
-       }
-       countSegments();
-     }
+      matrixDisplay.innerHTML = '';
+      for (var i = 0; i < SIZE; i ++) {
+        squares[i] = [];
+        const rowDiv = document.createElement('div');
+        for (var j = 0; j < SIZE; j ++) {
+          squares[i][j] = { value: Math.round(Math.random() * 2) };
+          rowDiv.innerHTML += `<span class="color${squares[i][j].value}">
+            ${squares[i][j].value}
+            <\span>`;
+        }
+        matrixDisplay.appendChild(rowDiv);
+      }
+      countSegments();
+    }
 
     addEventListener('load', function(e) {
-
-    generateMatrix();
+      generateMatrix();
     });
     document.querySelector('#next').addEventListener('click', () => {
-     generateMatrix();
+      generateMatrix();
     });
   </script>
 </body>
