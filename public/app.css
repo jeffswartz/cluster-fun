@@ -20,7 +20,8 @@ h1, #size {
 }
 .square {
  padding: 0 10px;
+ font-family: monospace;
 }
 #size {
-  width: 40px
+  width: 20px
 }
