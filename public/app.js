@@ -1,4 +1,4 @@
-const SIZE = 6;
+let size;
 const squares = [];
 const matrixDisplay = document.querySelector('#matrix');
 let clusters = [];
@@ -6,8 +6,8 @@ let clusterIndex = -1;
 let currentClusterId;
 
 const labelClusters = () => {
-  for (var i = 0; i < SIZE; i ++) {
-    for (var j = 0; j < SIZE; j ++) {
+  for (var i = 0; i < size; i ++) {
+    for (var j = 0; j < size; j ++) {
       console.log(i, j, squares[i][j].clusterId)
       document.getElementById(`${i}_${j}`).innerHTML = squares[i][j].clusterId;
     }
@@ -31,8 +31,8 @@ const countClusters = () => {
     }    
   }
 
-  for (var i = 0; i < SIZE; i ++) {
-    for (var j = 0; j < SIZE; j ++) {
+  for (var i = 0; i < size; i ++) {
+    for (var j = 0; j < size; j ++) {
       if ((j === 0) || (squares[i][j - 1].value !== squares[i][j].value)) {
         clusterIndex++;
         currentClusterId = clusterIndex;
@@ -45,6 +45,7 @@ const countClusters = () => {
           clusters[currentClusterId] = false;
           currentClusterId = squares[i - 1][j].clusterId;
           squares[i][j].clusterId = currentClusterId;
+          console.log('-', i, j, currentClusterId)
           traverseLeft(i, j, squares[i][j].value, currentClusterId);
         }
       }
@@ -63,11 +64,17 @@ const countClusters = () => {
 };
 
 const generateMatrix = () => {
+  size = parseInt(document.getElementById('size').value);
+  size = Math.max(Math.min(size, 12), 2);
+  if (!size) {
+    size = 8;
+  }
+  document.getElementById('size').value = size;
   matrixDisplay.innerHTML = '';
-  for (var i = 0; i < SIZE; i ++) {
+  for (var i = 0; i < size; i ++) {
     squares[i] = [];
     const rowDiv = document.createElement('div');
-    for (var j = 0; j < SIZE; j ++) {
+    for (var j = 0; j < size; j ++) {
       squares[i][j] = { value: Math.round(Math.random() * 2) };
       rowDiv.innerHTML += `<span class="square color${squares[i][j].value}" id="${i}_${j}">
         ${squares[i][j].value}
