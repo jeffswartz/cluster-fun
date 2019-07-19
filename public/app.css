@@ -15,6 +15,6 @@ body {
 .color2 {
  background-color: pink;
 }
-span {
- padding: 0 0 0 10px;
+.square {
+ padding: 0 10px;
 }
